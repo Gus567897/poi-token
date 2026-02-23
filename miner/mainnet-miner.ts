@@ -16,7 +16,7 @@ import * as fs from "fs";
 
 // ── Config ──
 const RPC_URL = process.env.RPC_URL || "https://solana-rpc.publicnode.com";
-const PROGRAM_ID = new PublicKey("HGDCZkwnD3vXkjdMUugEdimLoZB87TyQLHgz1Ro346y7");
+const PROGRAM_ID = new PublicKey("AcTXBfHAJgwt1sTn3DvTSKiiCKgShzGEZzq2zQrs5BnG");
 const KEYPAIR_PATH = process.env.KEYPAIR || "./miner-keypair.json";
 
 const conn = new Connection(RPC_URL, "confirmed");
