@@ -3,7 +3,7 @@ seeds = false
 skip-lint = false
 
 [programs.mainnet]
-poi = "Aio7qosxjY32JuFfSrbpdv2kqYu3MF6YynPdai22HMAg"
+poi = "422WLuzcNAwXdG7YC4QFxhBYz7AcA4H6uCX2mo6UG8hp"
 
 [registry]
 url = "https://api.apr.dev"
