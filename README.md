@@ -42,6 +42,8 @@ All mining rewards go through a 30-day linear vesting schedule:
 
 This prevents mine-and-dump behavior and encourages long-term participation.
 
+> **Note:** If you stop mining, your locked tokens continue to vest normally. You can withdraw unlocked tokens at any time — nothing is lost.
+
 ### Recipient Separation
 
 Miners can specify a separate **recipient** wallet for token rewards:
@@ -89,6 +91,7 @@ Zero write-lock contention design:
 - `submit_solution` reads `mine_state` as **read-only** — no shared write locks
 - Each solution creates its own PDA: `seeds = ["solution", miner_key, epoch_bytes]`
 - Unlimited parallel miners with zero transaction conflicts
+- **Each miner can submit at most 1 solution per epoch** (PDA uniqueness: `seeds = ["solution", miner_key, epoch]`)
 - Solution counting is passed by the crank during `advance_epoch`
 
 ### Instructions
@@ -102,7 +105,7 @@ Zero write-lock contention design:
 | `claim` | Claim reward into VestingAccount (locked) |
 | `withdraw` | Mint vested (unlocked) tokens to recipient |
 | `close_expired` | Close expired unclaimed solutions (500+ epochs old) |
-| `reset_state` | Reset mining state (admin only) |
+| `reset_state` | Reset mining state (admin only, for contract upgrades/migrations only) |
 
 ## Quick Start
 
@@ -171,6 +174,17 @@ The miner will:
 | ≤ 30 | 6 |
 | ≤ 40 | 7 |
 | > 40 | 8 |
+
+## FAQ / Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| `Account not found` | First run — VestingAccount will be created automatically |
+| `Epoch not ended` | Wait for current epoch to end before claiming |
+| `Nothing to withdraw` | Vesting period too short, wait for tokens to unlock |
+| `AlreadySubmitted (0x0)` | You already submitted this epoch, wait for next one |
+| `InsufficientDifficulty` | Nonce doesn't meet difficulty, miner retries automatically |
+| `MaxSupplyReached` | All 100B CRB have been mined |
 
 ## License
 
