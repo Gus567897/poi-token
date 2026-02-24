@@ -61,7 +61,7 @@ The on-chain program performs a single O(n) pass with zero heap allocation:
 - Vowel ratio 15%-55%, space ratio 10%-30%
 - Max 5 consecutive consonants, average consonant cluster ≤3.5
 - Common bigram frequency (th, he, in, er, an) ≥ len/80
-- Byte diversity ≥30 distinct bytes
+- Byte diversity ≥28 distinct bytes
 - Sentence structure: capital start, punctuation end
 - At least 3 sentences, at least 1 question
 - Mix of short (≤10 words) and long (≥20 words) sentences
