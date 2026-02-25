@@ -26,7 +26,7 @@ A Solana-based mining token where miners must generate natural language text con
 3. **Generate Text** — Create natural language text (256-800 bytes) containing all required words in order
 4. **Proof of Work** — Find a nonce such that `keccak256(challenge_seed | miner_key | text | "||" | nonce)` has enough leading zero bits
 5. **Submit Solution** — Submit the text + nonce + recipient on-chain (creates a Solution PDA)
-6. **Advance Epoch** — After epoch ends, the crank advances to the next epoch
+6. **Advance Epoch** — After epoch ends, anyone can advance to the next epoch (permissionless crank)
 7. **Claim Reward** — Reward is added to the miner's VestingAccount (locked)
 8. **Withdraw** — Vested tokens are minted to the recipient wallet as they unlock over 30 days
 
@@ -92,7 +92,7 @@ Zero write-lock contention design:
 - Each solution creates its own PDA: `seeds = ["solution", miner_key, epoch_bytes]`
 - Unlimited parallel miners with zero transaction conflicts
 - **Each miner can submit at most 1 solution per epoch** (PDA uniqueness: `seeds = ["solution", miner_key, epoch]`)
-- Solution counting is passed by the crank during `advance_epoch`
+- Solution counting is passed during `advance_epoch` (permissionless — any wallet can call)
 
 ### Instructions
 
@@ -100,7 +100,7 @@ Zero write-lock contention design:
 |-------------|-------------|
 | `initialize` | Create MineState PDA and token Mint |
 | `submit_solution(text, nonce, recipient)` | Submit a mining solution |
-| `advance_epoch(solution_count)` | Advance to next epoch, adjust difficulty |
+| `advance_epoch(solution_count)` | Advance to next epoch, adjust difficulty (permissionless) |
 | `create_vesting` | Create a VestingAccount for a miner (once) |
 | `claim` | Claim reward into VestingAccount (locked) |
 | `withdraw` | Mint vested (unlocked) tokens to recipient |

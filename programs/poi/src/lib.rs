@@ -588,9 +588,7 @@ pub struct AdvanceEpoch<'info> {
     )]
     pub mine_state: Account<'info, MineState>,
 
-    #[account(
-        constraint = crank.key() == mine_state.crank_authority @ ErrorCode::Unauthorized
-    )]
+    /// Anyone can crank (permissionless)
     pub crank: Signer<'info>,
 }
 
